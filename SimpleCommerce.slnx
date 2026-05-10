@@ -1,0 +1,7 @@
+<Solution>
+  <Project Path="SimpleCommerce.BLL/SimpleCommerce.BLL.csproj" Id="feca5eda-2ac5-4205-aea0-8321c3d69068" />
+  <Project Path="SimpleCommerce.Contract/SimpleCommerce.Contract.csproj" />
+  <Project Path="SimpleCommerce.DAL/SimpleCommerce.DAL.csproj" Id="54e45759-53b0-415d-93fa-35c6e577249f" />
+  <Project Path="SimpleCommerce.Models/SimpleCommerce.Models.csproj" Id="dc9b3a2d-d7d6-4034-88bd-080a22fc3ffc" />
+  <Project Path="SimpleCommerce.Web/SimpleCommerce.Web.csproj" />
+</Solution>
