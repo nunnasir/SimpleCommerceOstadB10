@@ -20,7 +20,7 @@ public class CategoryRepository : ICategoryRepository
     {
         return await _dbContext.Categories
             .AsNoTracking()
-            .OrderBy(c => c.Name)
+            .OrderByDescending(c => c.Id)
             .Select(MapToViewModel())
             .ToListAsync();
     }

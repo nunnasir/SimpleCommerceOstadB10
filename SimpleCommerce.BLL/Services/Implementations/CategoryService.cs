@@ -13,18 +13,30 @@ public class CategoryService : ICategoryService
         _categoryRepository = categoryRepository;
     }
 
-    public Task<IReadOnlyList<CategoryViewModel>> GetAllAsync() =>
-        _categoryRepository.GetAllAsync();
+    public Task<IReadOnlyList<CategoryViewModel>> GetAllAsync()
+    {
+        // Custom Business Logic
 
-    public Task<CategoryViewModel?> GetByIdAsync(int id) =>
-        _categoryRepository.GetByIdAsync(id);
+        return _categoryRepository.GetAllAsync();
+    }
 
-    public Task<int> CreateAsync(CategoryCreateViewModel model, int createdByUserId) =>
-        _categoryRepository.AddAsync(model, createdByUserId);
+    public Task<CategoryViewModel?> GetByIdAsync(int id)
+    {
+        return _categoryRepository.GetByIdAsync(id);
+    }
 
-    public Task UpdateAsync(CategoryEditViewModel model, int updatedByUserId) =>
-        _categoryRepository.UpdateAsync(model, updatedByUserId);
+    public Task<int> CreateAsync(CategoryCreateViewModel model, int createdByUserId)
+    {
+        return _categoryRepository.AddAsync(model, createdByUserId);
+    }
 
-    public Task DeleteAsync(int id) =>
-        _categoryRepository.DeleteAsync(id);
+    public Task UpdateAsync(CategoryEditViewModel model, int updatedByUserId)
+    {
+        return _categoryRepository.UpdateAsync(model, updatedByUserId);
+    }
+
+    public Task DeleteAsync(int id)
+    {
+        return _categoryRepository.DeleteAsync(id);
+    }
 }
