@@ -16,13 +16,30 @@ public class ProductRepository : IProductRepository
         _dbContext = dbContext;
     }
 
-    public async Task<IReadOnlyList<ProductViewModel>> GetAllAsync()
+    public async Task<IReadOnlyList<ProductViewModel>> SearchAsync(string? searchTerm, int? categoryId)
     {
-        return await _dbContext.Products
-            .AsNoTracking()
+        var query = _dbContext.Products.AsNoTracking();
+
+        if (categoryId.HasValue)
+            query = query.Where(p => p.CategoryId == categoryId.Value);
+
+        if (!string.IsNullOrWhiteSpace(searchTerm))
+        {
+            var term = searchTerm.Trim();
+            query = query.Where(p =>
+                p.Name.Contains(term) ||
+                (p.Description != null && p.Description.Contains(term)));
+        }
+
+        return await query
             .OrderByDescending(p => p.Id)
             .Select(MapToViewModel())
             .ToListAsync();
+    }
+
+    public async Task<IReadOnlyList<ProductViewModel>> GetAllAsync()
+    {
+        return await SearchAsync(null, null);
     }
 
     public async Task<ProductViewModel?> GetByIdAsync(int id)

@@ -4,6 +4,7 @@ namespace SimpleCommerce.DAL.Repositories.Interfaces;
 
 public interface IProductRepository
 {
+    Task<IReadOnlyList<ProductViewModel>> SearchAsync(string? searchTerm, int? categoryId);
     Task<IReadOnlyList<ProductViewModel>> GetAllAsync();
     Task<ProductViewModel?> GetByIdAsync(int id);
     Task<int> AddAsync(ProductCreateViewModel model, int createdBy);

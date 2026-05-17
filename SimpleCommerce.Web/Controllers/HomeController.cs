@@ -1,25 +1,47 @@
 using Microsoft.AspNetCore.Mvc;
+using SimpleCommerce.BLL.Services.Interfaces;
+using SimpleCommerce.Contract.ViewModels.Products;
 using SimpleCommerce.Web.Models;
 using System.Diagnostics;
 
-namespace SimpleCommerce.Web.Controllers
+namespace SimpleCommerce.Web.Controllers;
+
+public class HomeController : Controller
 {
-    public class HomeController : Controller
+    private readonly IProductService _productService;
+    private readonly ICategoryService _categoryService;
+
+    public HomeController(IProductService productService, ICategoryService categoryService)
     {
-        public IActionResult Index()
-        {
-            return View();
-        }
+        _productService = productService;
+        _categoryService = categoryService;
+    }
 
-        public IActionResult Privacy()
-        {
-            return View();
-        }
+    [HttpGet]
+    public async Task<IActionResult> Index(string? search, int? categoryId)
+    {
+        var products = await _productService.SearchAsync(search, categoryId);
+        var categories = await _categoryService.GetAllAsync();
 
-        [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
-        public IActionResult Error()
+        var model = new ProductCatalogViewModel
         {
-            return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
-        }
+            Products = products,
+            Categories = categories,
+            SearchTerm = search,
+            SelectedCategoryId = categoryId
+        };
+
+        return View(model);
+    }
+
+    public IActionResult Privacy()
+    {
+        return View();
+    }
+
+    [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
+    public IActionResult Error()
+    {
+        return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
     }
 }

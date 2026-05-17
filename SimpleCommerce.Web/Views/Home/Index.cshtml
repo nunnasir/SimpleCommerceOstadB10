@@ -1,8 +1,139 @@
-﻿@{
-    ViewData["Title"] = "Home Page";
+﻿@model ProductCatalogViewModel
+@{
+    ViewData["Title"] = "Shop";
+    var selectedCategory = Model.Categories.FirstOrDefault(c => c.Id == Model.SelectedCategoryId);
 }
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://learn.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+<div class="catalog-page">
+    <div class="catalog-hero mb-4">
+        <div class="row align-items-end g-3">
+            <div class="col-lg-8">
+                <p class="catalog-eyebrow mb-1">Browse our store</p>
+                <h1 class="catalog-title mb-2">Products</h1>
+                <p class="catalog-subtitle mb-0">
+                    @if (selectedCategory is not null)
+                    {
+                        <span>Showing <strong>@selectedCategory.Name</strong></span>
+                    }
+                    else
+                    {
+                        <span>All categories</span>
+                    }
+                    &middot; @Model.Products.Count @(Model.Products.Count == 1 ? "item" : "items")
+                </p>
+            </div>
+            <div class="col-lg-4">
+                <form method="get" asp-action="Index" class="catalog-search">
+                    @if (Model.SelectedCategoryId.HasValue)
+                    {
+                        <input type="hidden" name="categoryId" value="@Model.SelectedCategoryId" />
+                    }
+                    <div class="input-group input-group-lg shadow-sm">
+                        <input type="text"
+                               id="search"
+                               name="search"
+                               value="@Model.SearchTerm"
+                               class="form-control border-end-0"
+                               placeholder="Search products..." />
+                        <button type="submit" class="btn btn-primary px-4">
+                            Search
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        @if (!string.IsNullOrWhiteSpace(Model.SearchTerm) || Model.SelectedCategoryId.HasValue)
+        {
+            <div class="catalog-filters mt-3 d-flex flex-wrap align-items-center gap-2">
+                <span class="text-muted small">Active filters:</span>
+                @if (!string.IsNullOrWhiteSpace(Model.SearchTerm))
+                {
+                    <span class="badge rounded-pill text-bg-secondary">"@Model.SearchTerm"</span>
+                }
+                @if (selectedCategory is not null)
+                {
+                    <span class="badge rounded-pill text-bg-secondary">@selectedCategory.Name</span>
+                }
+                <a class="btn btn-sm btn-outline-dark" asp-action="Index">Clear all</a>
+            </div>
+        }
+    </div>
+
+    <div class="row g-4">
+        <div class="col-lg-3 order-lg-2">
+            <aside class="card catalog-sidebar border-0 shadow-sm sticky-lg-top">
+                <div class="card-header catalog-sidebar-header">
+                    <h2 class="h6 mb-0">Categories</h2>
+                </div>
+                <nav class="list-group list-group-flush catalog-category-list">
+                    <a asp-action="Index"
+                       asp-route-search="@Model.SearchTerm"
+                       class="list-group-item list-group-item-action @(Model.SelectedCategoryId is null ? "active" : "")">
+                        All categories
+                    </a>
+                    @foreach (var category in Model.Categories)
+                    {
+                        <a asp-action="Index"
+                           asp-route-categoryId="@category.Id"
+                           asp-route-search="@Model.SearchTerm"
+                           class="list-group-item list-group-item-action @(Model.SelectedCategoryId == category.Id ? "active" : "")">
+                            @category.Name
+                        </a>
+                    }
+                </nav>
+            </aside>
+        </div>
+
+        <div class="col-lg-9 order-lg-1">
+            @if (Model.Products.Count == 0)
+            {
+                <div class="card border-0 shadow-sm catalog-empty">
+                    <div class="card-body text-center py-5 px-4">
+                        <div class="catalog-empty-icon mb-3" aria-hidden="true">&#128269;</div>
+                        <h2 class="h5">No products found</h2>
+                        <p class="text-muted mb-4">Try another keyword or select a different category.</p>
+                        <a class="btn btn-primary" asp-action="Index">View all products</a>
+                    </div>
+                </div>
+            }
+            else
+            {
+                <div class="row row-cols-1 row-cols-sm-2 row-cols-xl-3 g-4">
+                    @foreach (var product in Model.Products)
+                    {
+                        <div class="col">
+                            <article class="card product-card h-100 border-0 shadow-sm">
+                                <div class="product-card-media">
+                                    @if (!string.IsNullOrEmpty(product.ImagePath))
+                                    {
+                                        <img src="~/@product.ImagePath" class="product-card-img" alt="@product.Name" loading="lazy" />
+                                    }
+                                    else
+                                    {
+                                        <div class="product-card-img product-card-img-placeholder">
+                                            <span>No image</span>
+                                        </div>
+                                    }
+                                </div>
+                                <div class="card-body d-flex flex-column">
+                                    <span class="product-category">@product.CategoryName</span>
+                                    <h3 class="product-name h6 mb-2">@product.Name</h3>
+                                    @if (!string.IsNullOrWhiteSpace(product.Description))
+                                    {
+                                        <p class="product-description text-muted small mb-3">
+                                            @(product.Description.Length > 90 ? product.Description[..90] + "…" : product.Description)
+                                        </p>
+                                    }
+                                    <div class="product-footer mt-auto d-flex align-items-center justify-content-between">
+                                        <span class="product-price">@product.Price.ToString("C")</span>
+                                    </div>
+                                </div>
+                            </article>
+                        </div>
+                    }
+                </div>
+            }
+        </div>
+    </div>
 </div>

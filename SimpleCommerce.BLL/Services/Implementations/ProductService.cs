@@ -13,6 +13,9 @@ public class ProductService : IProductService
         _productRepository = productRepository;
     }
 
+    public Task<IReadOnlyList<ProductViewModel>> SearchAsync(string? searchTerm, int? categoryId) =>
+        _productRepository.SearchAsync(searchTerm, categoryId);
+
     public Task<IReadOnlyList<ProductViewModel>> GetAllAsync() =>
         _productRepository.GetAllAsync();
 
