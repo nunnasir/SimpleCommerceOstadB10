@@ -8,6 +8,10 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <FrameworkReference Include="Microsoft.AspNetCore.App" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\SimpleCommerce.Contract\SimpleCommerce.Contract.csproj" />
     <ProjectReference Include="..\SimpleCommerce.DAL\SimpleCommerce.DAL.csproj" />
   </ItemGroup>

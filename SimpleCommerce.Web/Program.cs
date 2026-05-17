@@ -4,7 +4,6 @@ using SimpleCommerce.BLL.Services.Interfaces;
 using SimpleCommerce.DAL.Context;
 using SimpleCommerce.DAL.Repositories.Implementations;
 using SimpleCommerce.DAL.Repositories.Interfaces;
-
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddDbContext<AppDbContext>(options =>
@@ -12,6 +11,9 @@ builder.Services.AddDbContext<AppDbContext>(options =>
 
 builder.Services.AddScoped<ICategoryRepository, CategoryRepository>();
 builder.Services.AddScoped<ICategoryService, CategoryService>();
+builder.Services.AddScoped<IProductRepository, ProductRepository>();
+builder.Services.AddScoped<IProductService, ProductService>();
+builder.Services.AddScoped<IProductImageService, ProductImageService>();
 builder.Services.AddControllersWithViews();
 
 var app = builder.Build();

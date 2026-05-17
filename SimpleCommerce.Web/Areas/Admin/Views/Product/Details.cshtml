@@ -1,0 +1,44 @@
+@model ProductViewModel
+@{
+    ViewData["Title"] = "Product details";
+}
+
+<h2 class="mb-3">Product details</h2>
+
+@if (!string.IsNullOrEmpty(Model.ImagePath))
+{
+    <div class="mb-3">
+        <img src="~/@Model.ImagePath" alt="@Model.Name" class="img-thumbnail" style="max-height: 200px;" />
+    </div>
+}
+
+<dl class="row">
+    <dt class="col-sm-3">Name</dt>
+    <dd class="col-sm-9">@Model.Name</dd>
+
+    <dt class="col-sm-3">Category</dt>
+    <dd class="col-sm-9">@Model.CategoryName</dd>
+
+    <dt class="col-sm-3">Price</dt>
+    <dd class="col-sm-9">@Model.Price.ToString("C")</dd>
+
+    <dt class="col-sm-3">Description</dt>
+    <dd class="col-sm-9">@(Model.Description ?? "—")</dd>
+
+    <dt class="col-sm-3">Created</dt>
+    <dd class="col-sm-9">@Model.CreatedAt.ToLocalTime().ToString("g")</dd>
+
+    <dt class="col-sm-3">Created by</dt>
+    <dd class="col-sm-9">@Model.CreatedBy</dd>
+
+    <dt class="col-sm-3">Updated</dt>
+    <dd class="col-sm-9">@(Model.UpdatedAt.HasValue ? Model.UpdatedAt.Value.ToLocalTime().ToString("g") : "—")</dd>
+
+    <dt class="col-sm-3">Updated by</dt>
+    <dd class="col-sm-9">@(Model.UpdatedBy?.ToString() ?? "—")</dd>
+</dl>
+
+<div class="mt-3">
+    <a class="btn btn-primary" asp-action="Edit" asp-route-id="@Model.Id">Edit</a>
+    <a class="btn btn-outline-secondary" asp-action="Index">Back to list</a>
+</div>

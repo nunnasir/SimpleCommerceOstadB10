@@ -361,3 +361,7 @@ MigrationBackup/
 
 # Fody - auto-generated XML schema
 FodyWeavers.xsd
+
+# Uploaded product images (keep folder via .gitkeep)
+SimpleCommerce.Web/wwwroot/images/products/*
+!SimpleCommerce.Web/wwwroot/images/products/.gitkeep

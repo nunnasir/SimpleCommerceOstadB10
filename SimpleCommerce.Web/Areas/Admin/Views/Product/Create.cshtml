@@ -1,0 +1,53 @@
+@model ProductCreateViewModel
+@{
+    ViewData["Title"] = "Create product";
+}
+
+<h2 class="mb-3">Create product</h2>
+
+<div class="row">
+    <div class="col-md-8 col-lg-6">
+        <form asp-action="Create" method="post" enctype="multipart/form-data">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+            <div class="mb-3">
+                <label asp-for="Name" class="form-label"></label>
+                <input asp-for="Name" class="form-control" autocomplete="off" />
+                <span asp-validation-for="Name" class="text-danger"></span>
+            </div>
+
+            <div class="mb-3">
+                <label asp-for="CategoryId" class="form-label"></label>
+                <select asp-for="CategoryId" class="form-select" asp-items="ViewBag.CategoryId">
+                    <option value="">-- Select category --</option>
+                </select>
+                <span asp-validation-for="CategoryId" class="text-danger"></span>
+            </div>
+
+            <div class="mb-3">
+                <label asp-for="Price" class="form-label"></label>
+                <input asp-for="Price" class="form-control" type="number" step="0.01" min="0.01" />
+                <span asp-validation-for="Price" class="text-danger"></span>
+            </div>
+
+            <div class="mb-3">
+                <label asp-for="Description" class="form-label"></label>
+                <textarea asp-for="Description" class="form-control" rows="4"></textarea>
+                <span asp-validation-for="Description" class="text-danger"></span>
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label" for="imageFile">Image</label>
+                <input type="file" name="imageFile" id="imageFile" class="form-control" accept=".jpg,.jpeg,.png,.gif,.webp" />
+                <div class="form-text">Optional. Max 5 MB. JPG, PNG, GIF, or WEBP.</div>
+            </div>
+
+            <button type="submit" class="btn btn-primary">Save</button>
+            <a class="btn btn-outline-secondary" asp-action="Index">Cancel</a>
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="~/Views/Shared/_ValidationScriptsPartial.cshtml" />
+}
