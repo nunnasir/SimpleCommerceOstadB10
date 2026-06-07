@@ -60,6 +60,14 @@
         }
     </div>
 
+    @if (TempData["CartMessage"] is string cartMessage)
+    {
+        <div class="alert alert-success alert-dismissible fade show" role="alert">
+            @cartMessage
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    }
+
     <div class="row g-4">
         <div class="col-lg-3 order-lg-2">
             <aside class="card catalog-sidebar border-0 shadow-sm sticky-lg-top">
@@ -125,8 +133,14 @@
                                             @(product.Description.Length > 90 ? product.Description[..90] + "…" : product.Description)
                                         </p>
                                     }
-                                    <div class="product-footer mt-auto d-flex align-items-center justify-content-between">
+                                    <div class="product-footer mt-auto d-flex align-items-center justify-content-between gap-2">
                                         <span class="product-price">@product.Price.ToString("C")</span>
+                                        <form asp-controller="Cart" asp-action="Add" method="post" class="m-0">
+                                            @Html.AntiForgeryToken()
+                                            <input type="hidden" name="productId" value="@product.Id" />
+                                            <input type="hidden" name="returnUrl" value="@(Context.Request.Path + Context.Request.QueryString)" />
+                                            <button type="submit" class="btn btn-sm btn-primary">Add to Cart</button>
+                                        </form>
                                     </div>
                                 </div>
                             </article>

@@ -1,0 +1,12 @@
+@model int
+
+<a class="nav-link cart-nav-link d-flex align-items-center gap-1"
+   asp-controller="Cart"
+   asp-action="Index">
+    <span class="cart-nav-icon" aria-hidden="true">&#128722;</span>
+    <span>Cart</span>
+    @if (Model > 0)
+    {
+        <span class="cart-badge">@Model</span>
+    }
+</a>

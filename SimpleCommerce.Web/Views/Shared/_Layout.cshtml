@@ -25,7 +25,10 @@
                             <a class="nav-link" asp-area="" asp-controller="Home" asp-action="Index">Shop</a>
                         </li>
                     </ul>
-                    <ul class="navbar-nav ms-auto">
+                    <ul class="navbar-nav ms-auto align-items-lg-center">
+                        <li class="nav-item">
+                            @await Component.InvokeAsync("CartSummary")
+                        </li>
                         <li class="nav-item">
                             <a class="nav-link" asp-area="Admin" asp-controller="Home" asp-action="Index">Admin</a>
                         </li>
