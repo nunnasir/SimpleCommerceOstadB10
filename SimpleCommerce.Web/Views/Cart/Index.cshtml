@@ -127,7 +127,8 @@
                             <span>Subtotal</span>
                             <span class="text-primary">@Model.Subtotal.ToString("C")</span>
                         </div>
-                        <p class="text-muted small mt-3 mb-0">Taxes and shipping calculated at checkout.</p>
+                        <p class="text-muted small mt-3 mb-4">Taxes and shipping calculated at checkout.</p>
+                        <a class="btn btn-primary w-100" asp-controller="Checkout" asp-action="Index">Proceed to checkout</a>
                     </div>
                 </aside>
             </div>

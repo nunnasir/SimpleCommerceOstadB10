@@ -279,6 +279,37 @@ body.shop-body {
   width: 4.5rem;
 }
 
+.order-status-badge {
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+}
+
+.order-status-pending {
+  background-color: #fef3c7;
+  color: #92400e;
+}
+
+.order-status-processing {
+  background-color: #dbeafe;
+  color: #1e40af;
+}
+
+.order-status-shipped {
+  background-color: #e0e7ff;
+  color: #3730a3;
+}
+
+.order-status-delivered {
+  background-color: #d1fae5;
+  color: #065f46;
+}
+
+.order-status-cancelled {
+  background-color: #fee2e2;
+  color: #991b1b;
+}
+
 @media (max-width: 991.98px) {
   .catalog-sidebar {
     position: static !important;

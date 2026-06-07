@@ -1,0 +1,78 @@
+@model OrderViewModel
+@{
+    ViewData["Title"] = "Order Confirmation";
+}
+
+<div class="checkout-page">
+    <div class="cart-hero mb-4">
+        <p class="catalog-eyebrow mb-1">Thank you</p>
+        <h1 class="catalog-title mb-2">Order placed successfully</h1>
+        <p class="catalog-subtitle mb-0">Your order #@Model.Id has been received.</p>
+    </div>
+
+    <div class="alert alert-success" role="alert">
+        We sent a confirmation to <strong>@Model.CustomerEmail</strong>. Your order status is
+        <span class="badge order-status-badge order-status-@Model.Status.ToString().ToLowerInvariant()">@Model.StatusDisplayName</span>.
+    </div>
+
+    <div class="row g-4">
+        <div class="col-lg-7">
+            <div class="card border-0 shadow-sm">
+                <div class="card-header cart-summary-header">
+                    <h2 class="h6 mb-0">Order details</h2>
+                </div>
+                <div class="card-body">
+                    <dl class="row mb-0">
+                        <dt class="col-sm-4">Order #</dt>
+                        <dd class="col-sm-8">@Model.Id</dd>
+
+                        <dt class="col-sm-4">Date</dt>
+                        <dd class="col-sm-8">@Model.OrderDate.ToLocalTime().ToString("f")</dd>
+
+                        <dt class="col-sm-4">Customer</dt>
+                        <dd class="col-sm-8">@Model.CustomerName</dd>
+
+                        <dt class="col-sm-4">Email</dt>
+                        <dd class="col-sm-8">@Model.CustomerEmail</dd>
+
+                        <dt class="col-sm-4">Shipping address</dt>
+                        <dd class="col-sm-8">@Model.ShippingAddress</dd>
+
+                        <dt class="col-sm-4">Status</dt>
+                        <dd class="col-sm-8">
+                            <span class="badge order-status-badge order-status-@Model.Status.ToString().ToLowerInvariant()">@Model.StatusDisplayName</span>
+                        </dd>
+                    </dl>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-lg-5">
+            <aside class="card border-0 shadow-sm cart-summary-card">
+                <div class="card-header cart-summary-header">
+                    <h2 class="h6 mb-0">Items (@Model.TotalItems)</h2>
+                </div>
+                <div class="card-body">
+                    <ul class="list-group list-group-flush mb-3">
+                        @foreach (var item in Model.Items)
+                        {
+                            <li class="list-group-item px-0 d-flex justify-content-between">
+                                <span>@item.ProductName <span class="text-muted">× @item.Quantity</span></span>
+                                <span>@item.LineTotal.ToString("C")</span>
+                            </li>
+                        }
+                    </ul>
+                    <hr />
+                    <div class="d-flex justify-content-between fw-bold fs-5">
+                        <span>Total</span>
+                        <span class="text-primary">@Model.Subtotal.ToString("C")</span>
+                    </div>
+                </div>
+            </aside>
+        </div>
+    </div>
+
+    <div class="mt-4">
+        <a class="btn btn-primary" asp-controller="Home" asp-action="Index">Continue shopping</a>
+    </div>
+</div>
