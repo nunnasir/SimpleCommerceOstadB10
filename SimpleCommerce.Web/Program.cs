@@ -6,6 +6,7 @@ using SimpleCommerce.DAL.Context;
 using SimpleCommerce.DAL.Repositories.Implementations;
 using SimpleCommerce.DAL.Repositories.Interfaces;
 using SimpleCommerce.Models;
+using SimpleCommerce.Web.Data;
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddDbContext<AppDbContext>(options =>
@@ -20,7 +21,7 @@ builder.Services.AddScoped<ICartService, CartService>();
 builder.Services.AddScoped<IOrderRepository, OrderRepository>();
 builder.Services.AddScoped<IOrderService, OrderService>();
 
-builder.Services.AddIdentity<ApplicationUser, IdentityRole>(options =>
+builder.Services.AddIdentity<ApplicationUser, ApplicationRole>(options =>
 {
     // password settings
     options.Password.RequireDigit = true;
@@ -47,6 +48,12 @@ builder.Services.AddSession(options =>
 builder.Services.AddControllersWithViews();
 
 var app = builder.Build();
+
+// Seed the database
+using (var scope = app.Services.CreateScope())
+{
+   await DbInitializer.Initialize(scope.ServiceProvider);
+}
 
 if (!app.Environment.IsDevelopment())
 {
