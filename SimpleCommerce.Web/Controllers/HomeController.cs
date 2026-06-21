@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using SimpleCommerce.BLL.Services.Interfaces;
 using SimpleCommerce.Contract.ViewModels.Products;

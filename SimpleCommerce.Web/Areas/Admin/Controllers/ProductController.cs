@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using SimpleCommerce.BLL.Services.Interfaces;
 using SimpleCommerce.Contract.ViewModels.Products;
@@ -6,6 +7,7 @@ using SimpleCommerce.Contract.ViewModels.Products;
 namespace SimpleCommerce.Web.Areas.Admin.Controllers;
 
 [Area("Admin")]
+[Authorize(Roles = "Admin, Manager")]
 public class ProductController : Controller
 {
     private const int DefaultAuditUserId = 1;
@@ -26,6 +28,9 @@ public class ProductController : Controller
 
     public async Task<IActionResult> Index()
     {
+        var httpContext = Request.HttpContext.User.Claims;
+
+
         var items = await _productService.GetAllAsync();
         return View(items);
     }
@@ -175,3 +180,10 @@ public class ProductController : Controller
         ViewBag.CategoryId = new SelectList(categories, "Id", "Name", selectedCategoryId);
     }
 }
+
+
+// Claim, ClaimIdentity, ClaimPrincipe
+
+// UserIr = 10
+// Emaiol = 
+// Role = 

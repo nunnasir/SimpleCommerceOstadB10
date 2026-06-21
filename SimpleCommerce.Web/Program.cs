@@ -37,6 +37,16 @@ builder.Services.AddIdentity<ApplicationUser, ApplicationRole>(options =>
 .AddEntityFrameworkStores<AppDbContext>()
 .AddDefaultTokenProviders();
 
+// Configure application cookie
+builder.Services.ConfigureApplicationCookie(option =>
+{
+    option.LoginPath = "/Account/Login";
+    option.LogoutPath = "/Account/Logout";
+    option.AccessDeniedPath = "/Account/AccessDenied";
+    option.ExpireTimeSpan = TimeSpan.FromMinutes(10);
+    option.SlidingExpiration = false;
+});
+
 builder.Services.AddHttpContextAccessor();
 builder.Services.AddDistributedMemoryCache();
 builder.Services.AddSession(options =>
@@ -65,6 +75,7 @@ app.UseHttpsRedirection();
 app.UseRouting();
 app.UseSession();
 
+app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapStaticAssets();
@@ -81,56 +92,13 @@ app.MapControllerRoute(
 app.Run();
 
 
-// Software Authentication
-// Username / Email
-// password
-// Mobile/Email: OTP 
+// Role Based 
+// Claims Based
 
 
-// Authentciation
-
-// tables: userInformation, role, userRole, permission, rolePermission  
-
-// Registration: userInformation (Password -> PasswordHash -> Password Rules ())
-// login: userInformation (password )
-
-// user : permission -> 
-
-// 100 permissions: 
-// 20 user: 
-// 10 roles 
-
-// userPermission: 20 * 50 = 1000
-// rolePermission: 10 * 50 = 500
-// userRole: 20 * 10 = 200
+// Route: Product/Add
+// Authorization
 
 
-
-
-// prodecut.create -> product.create, product.update, product.delete
-
-
-// ID
-// Name
-// Email
-// Department
-
-// UserInformation
-
-// UserId
-// Name
-// Email
-// Department
-// Password / password hash
-// nasir123 -> nasir123 / hash(nasir123) -> 1234567890abcdef
-
-// Role tabel
-// -- Manager (Leave apply, Leave Approvded)
-// -- Employee (Leav Apply)
-// -- Admin
-
-
-
-// 
-
-
+// HttpContext 
+// HttpContext.User

@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using SimpleCommerce.BLL.Services.Interfaces;
 using SimpleCommerce.Contract.ViewModels.Orders;
@@ -6,6 +7,7 @@ using SimpleCommerce.Models;
 namespace SimpleCommerce.Web.Areas.Admin.Controllers;
 
 [Area("Admin")]
+[Authorize(Roles = "Admin")]
 public class OrderController : Controller
 {
     private const int DefaultAuditUserId = 1;

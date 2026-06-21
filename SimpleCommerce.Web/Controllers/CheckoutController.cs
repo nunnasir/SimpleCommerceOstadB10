@@ -1,9 +1,11 @@
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using SimpleCommerce.BLL.Services.Interfaces;
 using SimpleCommerce.Contract.ViewModels.Orders;
 
 namespace SimpleCommerce.Web.Controllers;
 
+[Authorize(Roles = "Customer")]
 public class CheckoutController : Controller
 {
     private const int DefaultAuditUserId = 1;

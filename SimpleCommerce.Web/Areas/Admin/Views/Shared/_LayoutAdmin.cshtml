@@ -32,6 +32,24 @@
                         <li class="nav-item">
                             <a class="nav-link" asp-area="" asp-controller="Home" asp-action="Index">Back to Site</a>
                         </li>
+
+                        @if (User.Identity?.IsAuthenticated == true)
+                        {
+                            <li class="nav-item d-flex align-items-center">
+                                <span class="nav-link text-light">
+                                    <i class="fas fa-envelope mr-1"></i>@User.Identity.Name
+                                </span>
+                            </li>
+
+                            <li class="nav-item">
+                                <form asp-area="" asp-controller="Account" asp-action="Logout" method="post" class="d-inline m-0">
+                                    @Html.AntiForgeryToken()
+                                    <button type="submit" class="nav-link btn btn-link text-light" style="border: none; background: none; padding: 0.5rem 1rem; cursor: pointer;">
+                                        <i class="fas fa-sign-out-alt mr-1"></i>Logout
+                                    </button>
+                                </form>
+                            </li>
+                        }
                     </ul>
                 </div>
             </div>
