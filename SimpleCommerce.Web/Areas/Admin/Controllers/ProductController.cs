@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using SimpleCommerce.BLL.Services.Interfaces;
+using SimpleCommerce.Contract.Exceptions;
 using SimpleCommerce.Contract.ViewModels.Products;
 
 namespace SimpleCommerce.Web.Areas.Admin.Controllers;
@@ -66,7 +67,7 @@ public class ProductController : Controller
             if (imageFile is not null && imageFile.Length > 0)
                 model.ImagePath = await _productImageService.SaveAsync(imageFile);
         }
-        catch (InvalidOperationException ex)
+        catch (BadRequestException ex)
         {
             ModelState.AddModelError(nameof(imageFile), ex.Message);
             await PopulateCategoriesAsync(model.CategoryId);
@@ -127,7 +128,7 @@ public class ProductController : Controller
                 model.ImagePath = previousImagePath;
             }
         }
-        catch (InvalidOperationException ex)
+        catch (BadRequestException ex)
         {
             ModelState.AddModelError(nameof(imageFile), ex.Message);
             await PopulateCategoriesAsync(model.CategoryId);
@@ -138,12 +139,12 @@ public class ProductController : Controller
         {
             await _productService.UpdateAsync(model, DefaultAuditUserId);
         }
-        catch (InvalidOperationException)
+        catch (NotFoundException)
         {
             if (model.ImagePath != previousImagePath)
                 _productImageService.DeleteIfExists(model.ImagePath);
 
-            return NotFound();
+            throw;
         }
 
         TempData["SuccessMessage"] = "Product updated successfully.";

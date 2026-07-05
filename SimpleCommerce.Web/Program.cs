@@ -7,6 +7,8 @@ using SimpleCommerce.DAL.Repositories.Implementations;
 using SimpleCommerce.DAL.Repositories.Interfaces;
 using SimpleCommerce.Models;
 using SimpleCommerce.Web.Data;
+using SimpleCommerce.Web.Middleware;
+using SimpleCommerce.Web.Services;
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddDbContext<AppDbContext>(options =>
@@ -56,6 +58,7 @@ builder.Services.AddSession(options =>
     options.Cookie.IsEssential = true;
 });
 builder.Services.AddControllersWithViews();
+builder.Services.AddSingleton<ExceptionFileLogger>();
 
 var app = builder.Build();
 
@@ -65,15 +68,18 @@ using (var scope = app.Services.CreateScope())
    await DbInitializer.Initialize(scope.ServiceProvider);
 }
 
+app.UseGlobalExceptionHandling();
+
 if (!app.Environment.IsDevelopment())
 {
-    app.UseExceptionHandler("/Home/Error");
     app.UseHsts();
 }
 
 app.UseHttpsRedirection();
 app.UseRouting();
 app.UseSession();
+
+app.UseStatusCodePagesWithReExecute("/Error/HandleStatusCode", "?code={0}");
 
 app.UseAuthentication();
 app.UseAuthorization();

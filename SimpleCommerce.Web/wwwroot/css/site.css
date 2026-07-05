@@ -324,3 +324,49 @@ body.shop-body {
     position: static !important;
   }
 }
+
+.error-page-card {
+  background: var(--shop-surface);
+  border: 1px solid var(--shop-border);
+  border-radius: var(--shop-radius);
+  padding: 2.5rem 2rem;
+  box-shadow: 0 10px 30px rgba(15, 23, 42, 0.06);
+}
+
+.error-page-code {
+  font-size: 4.5rem;
+  font-weight: 800;
+  line-height: 1;
+  color: var(--shop-primary);
+  margin-bottom: 0.75rem;
+}
+
+.error-page-title {
+  font-size: 1.75rem;
+  font-weight: 700;
+  margin-bottom: 0.75rem;
+}
+
+.error-page-message {
+  color: var(--shop-muted);
+  font-size: 1.05rem;
+  margin-bottom: 1.25rem;
+}
+
+.error-page-validation {
+  background: #fef2f2;
+  border: 1px solid #fecaca;
+  border-radius: 0.5rem;
+  padding: 1rem 1.25rem;
+  margin-bottom: 1.25rem;
+}
+
+.error-page-trace {
+  font-size: 0.875rem;
+  color: var(--shop-muted);
+  margin-bottom: 1.5rem;
+}
+
+.error-page-actions {
+  margin-top: 0.5rem;
+}

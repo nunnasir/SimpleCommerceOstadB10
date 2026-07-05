@@ -41,14 +41,7 @@ public class OrderController : Controller
         if (!ModelState.IsValid)
             return RedirectToAction(nameof(Details), new { id = model.Id });
 
-        try
-        {
-            await _orderService.UpdateStatusAsync(model.Id, model.Status, DefaultAuditUserId);
-        }
-        catch (InvalidOperationException)
-        {
-            return NotFound();
-        }
+        await _orderService.UpdateStatusAsync(model.Id, model.Status, DefaultAuditUserId);
 
         TempData["SuccessMessage"] = "Order status updated successfully.";
         return RedirectToAction(nameof(Details), new { id = model.Id });

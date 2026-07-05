@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using SimpleCommerce.BLL.Services.Interfaces;
+using SimpleCommerce.Contract.Exceptions;
 
 namespace SimpleCommerce.BLL.Services.Implementations;
 
@@ -25,14 +26,14 @@ public class ProductImageService : IProductImageService
     public async Task<string> SaveAsync(IFormFile file)
     {
         if (file.Length == 0)
-            throw new InvalidOperationException("Image file is empty.");
+            throw new BadRequestException("Image file is empty.");
 
         if (file.Length > MaxFileSizeBytes)
-            throw new InvalidOperationException("Image file must be 5 MB or smaller.");
+            throw new BadRequestException("Image file must be 5 MB or smaller.");
 
         var extension = Path.GetExtension(file.FileName);
         if (string.IsNullOrWhiteSpace(extension) || !AllowedExtensions.Contains(extension))
-            throw new InvalidOperationException("Only JPG, PNG, GIF, and WEBP images are allowed.");
+            throw new BadRequestException("Only JPG, PNG, GIF, and WEBP images are allowed.");
 
         var fileName = $"{Guid.NewGuid():N}{extension.ToLowerInvariant()}";
         var directory = Path.Combine(_environment.WebRootPath, RelativeFolder);

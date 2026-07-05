@@ -1,4 +1,5 @@
 using Microsoft.EntityFrameworkCore;
+using SimpleCommerce.Contract.Exceptions;
 using SimpleCommerce.Contract.ViewModels.Cart;
 using SimpleCommerce.Contract.ViewModels.Orders;
 using SimpleCommerce.DAL.Context;
@@ -105,9 +106,11 @@ public class OrderRepository : IOrderRepository
 
     public async Task UpdateStatusAsync(int id, OrderStatus status, int updatedBy)
     {
+        id = 100;
+
         var entity = await _dbContext.Orders.FirstOrDefaultAsync(o => o.Id == id);
         if (entity is null)
-            throw new InvalidOperationException($"Order {id} was not found.");
+            throw new NotFoundException("Order", id);
 
         entity.Status = status;
         entity.UpdatedAt = DateTime.UtcNow;

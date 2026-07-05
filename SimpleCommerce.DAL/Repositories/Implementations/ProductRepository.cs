@@ -1,5 +1,6 @@
 using System.Linq.Expressions;
 using Microsoft.EntityFrameworkCore;
+using SimpleCommerce.Contract.Exceptions;
 using SimpleCommerce.Contract.ViewModels.Products;
 using SimpleCommerce.DAL.Context;
 using SimpleCommerce.DAL.Repositories.Interfaces;
@@ -54,7 +55,7 @@ public class ProductRepository : IProductRepository
     public async Task<int> AddAsync(ProductCreateViewModel model, int createdBy)
     {
         if (!await _dbContext.Categories.AnyAsync(c => c.Id == model.CategoryId))
-            throw new InvalidOperationException($"Category {model.CategoryId} was not found.");
+            throw new NotFoundException("Category", model.CategoryId);
 
         var entity = new Product
         {
@@ -76,10 +77,10 @@ public class ProductRepository : IProductRepository
     {
         var entity = await _dbContext.Products.FirstOrDefaultAsync(p => p.Id == model.Id);
         if (entity is null)
-            throw new InvalidOperationException($"Product {model.Id} was not found.");
+            throw new NotFoundException("Product", model.Id);
 
         if (!await _dbContext.Categories.AnyAsync(c => c.Id == model.CategoryId))
-            throw new InvalidOperationException($"Category {model.CategoryId} was not found.");
+            throw new NotFoundException("Category", model.CategoryId);
 
         entity.Name = model.Name;
         entity.Description = model.Description;

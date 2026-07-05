@@ -1,5 +1,6 @@
 using System.Linq.Expressions;
 using Microsoft.EntityFrameworkCore;
+using SimpleCommerce.Contract.Exceptions;
 using SimpleCommerce.Contract.ViewModels.Categories;
 using SimpleCommerce.DAL.Context;
 using SimpleCommerce.DAL.Repositories.Interfaces;
@@ -53,7 +54,7 @@ public class CategoryRepository : ICategoryRepository
     {
         var entity = await _dbContext.Categories.FirstOrDefaultAsync(c => c.Id == model.Id);
         if (entity is null)
-            throw new InvalidOperationException($"Category {model.Id} was not found.");
+            throw new NotFoundException("Category", model.Id);
 
         entity.Name = model.Name;
         entity.Description = model.Description;

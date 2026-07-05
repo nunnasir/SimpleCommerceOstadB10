@@ -75,14 +75,7 @@ public class CategoryController : Controller
         if (!ModelState.IsValid)
             return View(model);
 
-        try
-        {
-            await _categoryService.UpdateAsync(model, DefaultAuditUserId);
-        }
-        catch (InvalidOperationException)
-        {
-            return NotFound();
-        }
+        await _categoryService.UpdateAsync(model, DefaultAuditUserId);
 
         TempData["SuccessMessage"] = "Category updated successfully.";
         return RedirectToAction(nameof(Index));

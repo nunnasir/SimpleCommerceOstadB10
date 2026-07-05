@@ -1,0 +1,42 @@
+@model ErrorPageViewModel
+
+<div class="row justify-content-center py-4">
+    <div class="col-lg-7 col-xl-6">
+        <div class="error-page-card text-center">
+            <div class="error-page-code">@Model.StatusCode</div>
+            <h1 class="error-page-title">@Model.Title</h1>
+            <p class="error-page-message">@Model.Message</p>
+
+            @if (Model.HasValidationErrors)
+            {
+                <div class="error-page-validation text-start">
+                    <p class="fw-semibold mb-2">Please fix the following:</p>
+                    <ul class="list-unstyled mb-0">
+                        @foreach (var error in Model.Errors!)
+                        {
+                            foreach (var message in error.Value)
+                            {
+                                <li class="text-danger">@error.Key: @message</li>
+                            }
+                        }
+                    </ul>
+                </div>
+            }
+
+            @if (Model.ShowRequestId)
+            {
+                <p class="error-page-trace">
+                    Request ID: <code>@Model.RequestId</code>
+                </p>
+            }
+
+            <div class="error-page-actions">
+                <a asp-controller="Home" asp-action="Index" class="btn btn-primary">Back to Shop</a>
+                @if (Model.StatusCode == 401)
+                {
+                    <a asp-controller="Account" asp-action="Login" class="btn btn-outline-secondary ms-2">Sign In</a>
+                }
+            </div>
+        </div>
+    </div>
+</div>
