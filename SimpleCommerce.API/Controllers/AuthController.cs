@@ -1,6 +1,7 @@
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
+using Asp.Versioning;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -11,6 +12,7 @@ using SimpleCommerce.Models;
 namespace SimpleCommerce.API.Controllers;
 
 [Route("api/[controller]")]
+[ApiVersionNeutral]
 [ApiController]
 public class AuthController : ControllerBase
 {

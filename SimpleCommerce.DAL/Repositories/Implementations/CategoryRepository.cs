@@ -2,6 +2,7 @@ using System.Linq.Expressions;
 using Microsoft.EntityFrameworkCore;
 using SimpleCommerce.Contract.Exceptions;
 using SimpleCommerce.Contract.ViewModels.Categories;
+using SimpleCommerce.Contract.ViewModels.Common;
 using SimpleCommerce.DAL.Context;
 using SimpleCommerce.DAL.Repositories.Interfaces;
 using SimpleCommerce.Models;
@@ -24,6 +25,28 @@ public class CategoryRepository : ICategoryRepository
             .OrderByDescending(c => c.Id)
             .Select(MapToViewModel())
             .ToListAsync();
+    }
+
+    public async Task<PagedResultViewModel<CategoryViewModel>> GetPagedAsync(
+        int pageNumber,
+        int pageSize)
+    {
+        var query = _dbContext.Categories.AsNoTracking();
+        var totalCount = await query.CountAsync();
+        var items = await query
+            .OrderByDescending(c => c.Id)
+            .Skip((pageNumber - 1) * pageSize)
+            .Take(pageSize)
+            .Select(MapToViewModel())
+            .ToListAsync();
+
+        return new PagedResultViewModel<CategoryViewModel>
+        {
+            Items = items,
+            PageNumber = pageNumber,
+            PageSize = pageSize,
+            TotalCount = totalCount
+        };
     }
 
     public async Task<CategoryViewModel?> GetByIdAsync(int id)

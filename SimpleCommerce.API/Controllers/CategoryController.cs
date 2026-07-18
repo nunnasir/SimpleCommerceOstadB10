@@ -1,11 +1,16 @@
-﻿using Microsoft.AspNetCore.Authorization;
+﻿using System.ComponentModel.DataAnnotations;
+using Asp.Versioning;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using SimpleCommerce.BLL.Services.Interfaces;
 using SimpleCommerce.Contract.ViewModels.Categories;
+using SimpleCommerce.Contract.ViewModels.Common;
 
 namespace SimpleCommerce.API.Controllers;
 
-[Route("api/[controller]")]
+[ApiVersion(1.0)]
+[ApiVersion(2.0)]
+[Route("api/v{version:apiVersion}/[controller]")]
 [ApiController]
 public class CategoryController : ControllerBase
 {
@@ -19,10 +24,21 @@ public class CategoryController : ControllerBase
     }
 
     [HttpGet]
+    [MapToApiVersion(1.0)]
     public async Task<ActionResult<IReadOnlyList<CategoryViewModel>>> GetAll()
     {
         var items = await _categoryService.GetAllAsync();
         return Ok(items);
+    }
+
+    [HttpGet]
+    [MapToApiVersion(2.0)]
+    public async Task<ActionResult<PagedResultViewModel<CategoryViewModel>>> GetAllV2(
+        [FromQuery, Range(1, int.MaxValue)] int pageNumber = 1,
+        [FromQuery, Range(1, 100)] int pageSize = 10)
+    {
+        var result = await _categoryService.GetPagedAsync(pageNumber, pageSize);
+        return Ok(result);
     }
 
     [HttpGet("{id:int}")]

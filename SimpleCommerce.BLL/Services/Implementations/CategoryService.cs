@@ -1,5 +1,6 @@
 using SimpleCommerce.BLL.Services.Interfaces;
 using SimpleCommerce.Contract.ViewModels.Categories;
+using SimpleCommerce.Contract.ViewModels.Common;
 using SimpleCommerce.DAL.Repositories.Interfaces;
 
 namespace SimpleCommerce.BLL.Services.Implementations;
@@ -18,6 +19,11 @@ public class CategoryService : ICategoryService
         // Custom Business Logic
 
         return _categoryRepository.GetAllAsync();
+    }
+
+    public Task<PagedResultViewModel<CategoryViewModel>> GetPagedAsync(int pageNumber, int pageSize)
+    {
+        return _categoryRepository.GetPagedAsync(pageNumber, pageSize);
     }
 
     public Task<CategoryViewModel?> GetByIdAsync(int id)

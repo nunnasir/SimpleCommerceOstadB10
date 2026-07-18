@@ -1,4 +1,5 @@
 using System.Text;
+using Asp.Versioning;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
@@ -61,6 +62,21 @@ builder.Services.AddExceptionHandler<GlobalExceptionHandler>();
 builder.Services.AddProblemDetails();
 builder.Services.AddControllers();
 
+builder.Services
+    .AddApiVersioning(options =>
+    {
+        options.DefaultApiVersion = new ApiVersion(1, 0);
+        options.AssumeDefaultVersionWhenUnspecified = true;
+        options.ReportApiVersions = true;
+        options.ApiVersionReader = new UrlSegmentApiVersionReader();
+    })
+    .AddMvc()
+    .AddApiExplorer(options =>
+    {
+        options.GroupNameFormat = "'v'VVV";
+        options.SubstituteApiVersionInUrl = true;
+    });
+
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(options =>
 {
@@ -71,14 +87,29 @@ builder.Services.AddSwaggerGen(options =>
         Description = "Use POST /api/auth/login or POST /api/auth/signup to obtain a JWT, then click Authorize and enter: Bearer {your_token}"
     });
 
+    options.SwaggerDoc("v2", new OpenApiInfo
+    {
+        Title = "SimpleCommerce API",
+        Version = "v2",
+        Description = "Version 2 adds server-side pagination to the categories endpoint."
+    });
+
+    options.DocInclusionPredicate((documentName, apiDescription) =>
+        apiDescription.GroupName == documentName);
+
     options.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
     {
         Name = "Authorization",
-        Type = SecuritySchemeType.Http,
-        Scheme = "Bearer",
-        BearerFormat = "JWT",
+        Type = SecuritySchemeType.ApiKey,
         In = ParameterLocation.Header,
-        Description = "JWT Authorization header using the Bearer scheme. Example: Bearer {token}"
+        Description = "Enter: Bearer {your JWT token}"
+
+        //Name = "Authorization",
+        //Type = SecuritySchemeType.Http,
+        //Scheme = "Bearer",
+        //BearerFormat = "JWT",
+        //In = ParameterLocation.Header,
+        //Description = "JWT Authorization header using the Bearer scheme."
     });
 
     options.AddSecurityRequirement(new OpenApiSecurityRequirement
@@ -110,6 +141,7 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI(options =>
     {
         options.SwaggerEndpoint("/swagger/v1/swagger.json", "SimpleCommerce API v1");
+        options.SwaggerEndpoint("/swagger/v2/swagger.json", "SimpleCommerce API v2");
         options.RoutePrefix = string.Empty;
     });
 }
