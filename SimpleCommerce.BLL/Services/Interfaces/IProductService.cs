@@ -10,4 +10,5 @@ public interface IProductService
     Task<int> CreateAsync(ProductCreateViewModel model, int createdByUserId);
     Task UpdateAsync(ProductEditViewModel model, int updatedByUserId);
     Task DeleteAsync(int id);
+    Task<byte[]> ExportToExcelAsync();
 }

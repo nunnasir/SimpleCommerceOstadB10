@@ -94,4 +94,33 @@ public class ProductServiceTests
 
         _productRepositoryMock.Verify(r => r.DeleteAsync(1), Times.Once);
     }
+
+    [Fact]
+    public async Task ExportToExcelAsync_ReturnsExcelFileBytes()
+    {
+        var products = new List<ProductViewModel>
+        {
+            new()
+            {
+                Id = 1,
+                Name = "Galaxy Watch",
+                Description = "Smart watch",
+                CategoryName = "Tech",
+                Price = 100m,
+                ImagePath = "images/products/watch.png",
+                CreatedAt = new DateTime(2026, 6, 21, 23, 5, 0)
+            }
+        };
+
+        _productRepositoryMock
+            .Setup(r => r.GetAllAsync())
+            .ReturnsAsync(products);
+
+        var result = await _sut.ExportToExcelAsync();
+
+        Assert.NotEmpty(result);
+        // XLSX files are ZIP packages and start with PK
+        Assert.Equal((byte)'P', result[0]);
+        Assert.Equal((byte)'K', result[1]);
+    }
 }

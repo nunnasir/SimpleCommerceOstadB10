@@ -146,4 +146,16 @@ public class ProductController : ControllerBase
         _productImageService.DeleteIfExists(product.ImagePath);
         return NoContent();
     }
+
+    [HttpGet("export")]
+    public async Task<IActionResult> ExportToExcel()
+    {
+        var content = await _productService.ExportToExcelAsync();
+        var fileName = $"products-{DateTime.UtcNow:yyyyMMdd-HHmmss}.xlsx";
+
+        return File(
+            content,
+            "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+            fileName);
+    }
 }

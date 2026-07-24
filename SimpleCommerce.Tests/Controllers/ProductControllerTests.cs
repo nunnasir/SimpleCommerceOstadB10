@@ -176,4 +176,24 @@ public class ProductControllerTests
         Assert.IsType<NotFoundResult>(result);
         _productServiceMock.Verify(s => s.DeleteAsync(It.IsAny<int>()), Times.Never);
     }
+
+    [Fact]
+    public async Task ExportToExcel_ReturnsFileResult()
+    {
+        var bytes = new byte[] { 0x50, 0x4B, 0x03, 0x04 };
+
+        _productServiceMock
+            .Setup(s => s.ExportToExcelAsync())
+            .ReturnsAsync(bytes);
+
+        var result = await _sut.ExportToExcel();
+
+        var fileResult = Assert.IsType<FileContentResult>(result);
+        Assert.Equal(
+            "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+            fileResult.ContentType);
+        Assert.Equal(bytes, fileResult.FileContents);
+        Assert.StartsWith("products-", fileResult.FileDownloadName);
+        Assert.EndsWith(".xlsx", fileResult.FileDownloadName);
+    }
 }
