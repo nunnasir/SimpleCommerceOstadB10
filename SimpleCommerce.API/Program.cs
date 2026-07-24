@@ -135,16 +135,24 @@ using (var scope = app.Services.CreateScope())
     await DbInitializer.InitializeAsync(scope.ServiceProvider);
 }
 
-if (app.Environment.IsDevelopment())
+//if (app.Environment.IsDevelopment())
+//{
+//    app.UseSwagger();
+//    app.UseSwaggerUI(options =>
+//    {
+//        options.SwaggerEndpoint("/swagger/v1/swagger.json", "SimpleCommerce API v1");
+//        options.SwaggerEndpoint("/swagger/v2/swagger.json", "SimpleCommerce API v2");
+//        options.RoutePrefix = string.Empty;
+//    });
+//}
+
+app.UseSwagger();
+app.UseSwaggerUI(options =>
 {
-    app.UseSwagger();
-    app.UseSwaggerUI(options =>
-    {
-        options.SwaggerEndpoint("/swagger/v1/swagger.json", "SimpleCommerce API v1");
-        options.SwaggerEndpoint("/swagger/v2/swagger.json", "SimpleCommerce API v2");
-        options.RoutePrefix = string.Empty;
-    });
-}
+    options.SwaggerEndpoint("/swagger/v1/swagger.json", "SimpleCommerce API v1");
+    options.SwaggerEndpoint("/swagger/v2/swagger.json", "SimpleCommerce API v2");
+    options.RoutePrefix = string.Empty;
+});
 
 app.UseHttpsRedirection();
 app.UseExceptionHandler();
