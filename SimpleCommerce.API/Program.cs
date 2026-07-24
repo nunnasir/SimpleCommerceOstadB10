@@ -21,6 +21,9 @@ builder.Services.AddDbContext<AppDbContext>(options =>
 
 builder.Services.AddScoped<ICategoryRepository, CategoryRepository>();
 builder.Services.AddScoped<ICategoryService, CategoryService>();
+builder.Services.AddScoped<IProductRepository, ProductRepository>();
+builder.Services.AddScoped<IProductService, ProductService>();
+builder.Services.AddScoped<IProductImageService, ProductImageService>();
 
 builder.Services.AddIdentity<ApplicationUser, ApplicationRole>(options =>
 {
@@ -91,7 +94,7 @@ builder.Services.AddSwaggerGen(options =>
     {
         Title = "SimpleCommerce API",
         Version = "v2",
-        Description = "Version 2 adds server-side pagination to the categories endpoint."
+        Description = "Version 2 adds server-side pagination to categories and search/filter to products."
     });
 
     options.DocInclusionPredicate((documentName, apiDescription) =>
@@ -155,6 +158,7 @@ app.UseSwaggerUI(options =>
 });
 
 app.UseHttpsRedirection();
+app.UseStaticFiles();
 app.UseExceptionHandler();
 app.UseAuthentication();
 app.UseAuthorization();
